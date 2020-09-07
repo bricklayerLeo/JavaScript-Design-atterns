@@ -1,8 +1,8 @@
 <template>
   <div class="hello">
-    <div @click="showSubmit=true">点击</div>
+    <div @click="showSubmit=!showSubmit">点击</div>
     <div v-for="(item, idx) in formArr" :key="idx">
-      <sub-form v-model="formArr[idx]" :showSubmit="showSubmit" :ref="`form${idx}`" />
+      <sub-form @sync="sync($event, idx)" :showSubmit="showSubmit" :ref="`form${idx}`" />
     </div>
   </div>
 </template>
@@ -18,26 +18,27 @@ export default {
       showSubmit: false,
     };
   },
-  methods: {},
+  methods: {
+    sync(subForm, idx) {
+      this.formArr[idx] = subForm
+
+      let arr = []
+
+      arr[2] = 0
+      console.log(arr, 'arr')
+
+      let flag = arr.every( v => {
+        console.log(typeof v, 'type')
+        return typeof v === "number"
+      })
+      console.log(flag, 'flag')
+    }
+  },
   components: {
     subForm,
   },
   created() {
-    let num = 3,
-      formData = {
-        name: "",
-        region: "",
-        date1: "",
-        date2: "",
-        delivery: false,
-        type: [],
-        resource: "",
-        desc: "",
-      };
-
-    for (let i = 0; i < num; i++) {
-      this.formArr.push(formData);
-    }
+    this.formArr = Array(3)
   },
 };
 </script>
