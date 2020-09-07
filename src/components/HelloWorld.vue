@@ -1,22 +1,52 @@
 <template>
   <div class="hello">
-    <h1>{{ msg }}</h1>
+    <div @click="showSubmit=true">点击</div>
+    <div v-for="(item, idx) in formArr" :key="idx">
+      <sub-form v-model="formArr[idx]" :showSubmit="showSubmit" :ref="`form${idx}`" />
+    </div>
   </div>
 </template>
 
 <script>
+import subForm from "./form";
 export default {
   name: "HelloWorld",
-  props: {
-    msg: String,
+  data() {
+    return {
+      msg: "Welcome to Your Vue.js App",
+      formArr: [],
+      showSubmit: false,
+    };
+  },
+  methods: {},
+  components: {
+    subForm,
+  },
+  created() {
+    let num = 3,
+      formData = {
+        name: "",
+        region: "",
+        date1: "",
+        date2: "",
+        delivery: false,
+        type: [],
+        resource: "",
+        desc: "",
+      };
+
+    for (let i = 0; i < num; i++) {
+      this.formArr.push(formData);
+    }
   },
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="less">
-h3 {
-  margin: 40px 0 0;
+<style scoped>
+h1,
+h2 {
+  font-weight: normal;
 }
 ul {
   list-style-type: none;
