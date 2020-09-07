@@ -1,8 +1,8 @@
 <template>
   <div class="hello">
-    <div @click="showSubmit=true">点击</div>
+    <div @click="showSubmit=!showSubmit">点击</div>
     <div v-for="(item, idx) in formArr" :key="idx">
-      <sub-form v-model="formArr[idx]" :showSubmit="showSubmit" :ref="`form${idx}`" />
+      <sub-form @fromSon="fromSon($event, idx)" :resert="resert" :showSubmit="showSubmit" />
     </div>
   </div>
 </template>
@@ -14,31 +14,63 @@ export default {
   data() {
     return {
       msg: "Welcome to Your Vue.js App",
-      formArr: [],
+      formArr: Array(3),
       showSubmit: false,
+      resert: false,
     };
   },
-  methods: {},
+  methods: {
+    fromSon(v, idx) {
+      this.formArr[idx] = v;
+
+      let arr = [];
+
+      for (let i = 0; i < this.formArr.length; i++) {
+        if (typeof this.formArr[i] === "object") {
+          arr.push("ok");
+          // sessionStorage.setItem("sss", JSON.stringify(this.formArr));
+        }
+      }
+
+      if (arr.length === this.formArr.length) {
+        sessionStorage.setItem("sss", JSON.stringify(this.formArr));
+        this.resert = !this.resert;
+      }
+      // let flag = this.formArr.every((obj) => {
+      //   console.log(typeof obj);
+      //   console.log(obj instanceof Object, "obj.constructor == Object");
+      //   return obj instanceof Object;
+      // });
+      // if (flag) {
+      //   sessionStorage.setItem("sss", JSON.stringify(this.formArr));
+      //   // this.resert = !this.resert;
+      //   setTimeout((e) => {
+      //     this.$children[idx + 1].resetForm("ruleForm");
+      //   }, 3000);
+      //   // this.$children[idx + 1].resetForm("ruleForm");
+      // }
+    },
+  },
   components: {
     subForm,
   },
-  created() {
-    let num = 3,
-      formData = {
-        name: "",
-        region: "",
-        date1: "",
-        date2: "",
-        delivery: false,
-        type: [],
-        resource: "",
-        desc: "",
-      };
+  // created() {
+  //   let num = 3,
+  //   formData = {
+  //     name: "",
+  //     region: "",
+  //     date1: "",
+  //     date2: "",
+  //     delivery: false,
+  //     type: [],
+  //     resource: "",
+  //     desc: "",
+  //   };
 
-    for (let i = 0; i < num; i++) {
-      this.formArr.push(formData);
-    }
-  },
+  // for (let i = 0; i < num; i++) {
+  //   this.formArr.push(formData);
+  // }
+  // },
 };
 </script>
 
