@@ -2,7 +2,7 @@
   <div class="hello">
     <div @click="showSubmit=!showSubmit">点击</div>
     <div v-for="(item, idx) in formArr" :key="idx">
-      <sub-form @fromSon="fromSon($event, idx)" :resert="resert" :showSubmit="showSubmit" />
+      <sub-form @sync="sync($event, idx)" :showSubmit="showSubmit" :ref="`form${idx}`" />
     </div>
   </div>
 </template>
@@ -20,57 +20,27 @@ export default {
     };
   },
   methods: {
-    fromSon(v, idx) {
-      this.formArr[idx] = v;
+    sync(subForm, idx) {
+      this.formArr[idx] = subForm;
 
       let arr = [];
 
-      for (let i = 0; i < this.formArr.length; i++) {
-        if (typeof this.formArr[i] === "object") {
-          arr.push("ok");
-          // sessionStorage.setItem("sss", JSON.stringify(this.formArr));
-        }
-      }
+      arr[2] = 0;
+      console.log(arr, "arr");
 
-      if (arr.length === this.formArr.length) {
-        sessionStorage.setItem("sss", JSON.stringify(this.formArr));
-        this.resert = !this.resert;
-      }
-      // let flag = this.formArr.every((obj) => {
-      //   console.log(typeof obj);
-      //   console.log(obj instanceof Object, "obj.constructor == Object");
-      //   return obj instanceof Object;
-      // });
-      // if (flag) {
-      //   sessionStorage.setItem("sss", JSON.stringify(this.formArr));
-      //   // this.resert = !this.resert;
-      //   setTimeout((e) => {
-      //     this.$children[idx + 1].resetForm("ruleForm");
-      //   }, 3000);
-      //   // this.$children[idx + 1].resetForm("ruleForm");
-      // }
+      let flag = arr.every((v) => {
+        console.log(typeof v, "type");
+        return typeof v === "number";
+      });
+      console.log(flag, "flag");
     },
   },
   components: {
     subForm,
   },
-  // created() {
-  //   let num = 3,
-  //   formData = {
-  //     name: "",
-  //     region: "",
-  //     date1: "",
-  //     date2: "",
-  //     delivery: false,
-  //     type: [],
-  //     resource: "",
-  //     desc: "",
-  //   };
-
-  // for (let i = 0; i < num; i++) {
-  //   this.formArr.push(formData);
-  // }
-  // },
+  created() {
+    this.formArr = Array(3);
+  },
 };
 </script>
 

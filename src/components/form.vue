@@ -10,12 +10,6 @@
       <el-form-item label="活动名称" prop="name">
         <el-input v-model="ruleForm.name"></el-input>
       </el-form-item>
-      <!-- <el-form-item label="特殊资源" prop="resource">
-        <el-radio-group v-model="ruleForm.resource">
-          <el-radio label="线上品牌商赞助"></el-radio>
-          <el-radio label="线下场地免费"></el-radio>
-        </el-radio-group>
-      </el-form-item>-->
       <el-form-item label="活动形式" prop="desc">
         <el-input type="textarea" v-model="ruleForm.desc"></el-input>
       </el-form-item>
@@ -29,20 +23,11 @@
 
 <script>
 export default {
-  props: {
-    showSubmit: {
-      type: Boolean,
-      default: false,
-    },
-    resert: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  model: {
-    prop: "ruleForm",
-    event: "sync",
-  },
+  props: ["showSubmit"],
+  // model: {
+  //   prop: "ruleForm",
+  //   event: "sync",
+  // },
   data() {
     return {
       rules: {
@@ -69,8 +54,6 @@ export default {
       ruleForm: {
         name: "",
         region: "",
-        date1: "",
-        date2: "",
         delivery: false,
         type: [],
         resource: "",
@@ -81,33 +64,16 @@ export default {
   },
   watch: {
     showSubmit(n) {
-      //   console.log(n, "nnn");
-      //   if (n) {
-      this.submitForm(`ruleForm`);
-      //   }
-    },
-    resert(v) {
-      //   if (v) {
-      this.resetForm("ruleForm");
-      //   }
+      this.submitForm();
     },
   },
   methods: {
-    submitForm(formName) {
+    submitForm() {
       this.$refs.ruleForm.validate((valid) => {
         if (valid) {
-          this.$emit("fromSon", this.ruleForm);
-          //   this.ruleForm = {
-          //     name: "",
-          //     region: "",
-          //     date1: "",
-          //     date2: "",
-          //     delivery: false,
-          //     type: [],
-          //     resource: "",
-          //     desc: "",
-          //   };
-          //   this.resetForm("ruleForm");
+          console.log(this, "this");
+          console.log(this.ruleForm, "ruleform");
+          this.$emit("sync", this.ruleForm);
         } else {
           console.log("error submit!!");
           return false;
